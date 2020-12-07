@@ -7,9 +7,13 @@ class AllUsersComponents extends Component {
 
     userService = new UserService();
 
-    state = {users: [], classState: 'one', choosenUser: null};
+    state = {users: [], classState: 'one', chosenUser: null};
 
     flag = false;
+
+    OnUserChose = (id) => {
+        this.userService.getUserById().then(value => this.setState({chosenUser: value}))
+    }
 
     componentDidMount() {
         this.userService.getAllUsers().then(value => this.setState({users: value}))

@@ -8,4 +8,8 @@ export class UserService {
         .then(value => value.json())
         .then(value => {return  value});
   }
+
+  getUserById(id) {
+      return fetch(`${this.url}/${id}`).then(value => value.json()).then(value => value);
+  }
 }

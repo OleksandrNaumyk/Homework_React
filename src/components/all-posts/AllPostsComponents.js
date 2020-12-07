@@ -9,6 +9,7 @@ class AllPostsComponents extends Component {
 
     state = {posts: [], classState: 'three', flag: false, chosenPost: null};
 
+
     componentDidMount() {
         this.postService.getAllPosts().then(value => this.setState({posts: value}))
     };
@@ -23,8 +24,7 @@ class AllPostsComponents extends Component {
     };
 
     selectPost = (id) => {
-        let chosenPost = this.state.posts.find(value => value.id === id)
-        this.setState({chosenPost})
+        this.postService.getPostById().then(value => this.setState({chosenPost: value}))
     };
 
 
