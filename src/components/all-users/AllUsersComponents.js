@@ -1,20 +1,18 @@
 import React, {Component} from 'react';
 import UserComponent from '../user/UserComponent';
 import './AllUsers.css';
+import {UserService} from '../../services/UserService';
 
 class AllUsersComponents extends Component {
+
+    userService = new UserService();
 
     state = {users: [], classState: 'one', choosenUser: null};
 
     flag = false;
 
     componentDidMount() {
-
-        fetch('https://jsonplaceholder.typicode.com/users')
-            .then(value => value.json())
-            .then(userFromApi => {
-                this.setState({users: userFromApi})
-            });
+        this.userService.getAllUsers().then(value => this.setState({users: value}))
     }
 
     changeColor = () => {
