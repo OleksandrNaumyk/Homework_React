@@ -1,68 +1,45 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'SET_TODO': {
-            return action.payload;
-        }
-        case 'CHANGE_TODO_STATUS': {
-            return {...state,
-            completed: !state.completed
-            };
-        }
-        case 'CHANGE_TODO_TITLE': {
-            return {
-                ...state,
-                title: action.payload
-            };
-        }
-        default: {
-            return state;
-        }
-    }
-};
+const Test = memo(({name}) => {
+    const [counter, setCounter] = useState(0);
+//    useEffect(() => {
+//         console.log('from main function');
+// //        const interval = setInterval(() => console.log('from interval'), 1000)
+// //        const interval = setInterval(() => console.log('from interval'), 1000)
+//
+//       return () => {
+//         console.log('from cleanup function');
+// //        clearInterval(interval);
+//         }
+//     }, [counter])
 
-const initialState = {
-    userId: null,
-    id: null,
-    title: '',
-    completed: false
-};
+        console.log('test was rerendered');
+        return <h2 onClick={() => setCounter((prev) => prev + 1)}>Something happen! {counter} {name}</h2>
+});
 
 export default function App() {
-    const [state, dispatch] = useReducer(reducer, initialState);
-//    const [user, setUser] = useState({name: "a", age: 30});
-    const [counter, setCounter] = useState(1);
-//    const [todo, setTodo] = useState();
 
-    useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/todos/${counter}`)
-            .then(response => response.json())
-            .then(json => {
-                dispatch({type: 'SET_TODO', payload: json})
-                console.log(json);
-            })
-    }, [counter]);
+    const [isVisible, setIsVisible] = useState(false)
 
-    const onClickHandler = () => setCounter((prev) => prev + 1);
-    const onStatusChange = () => dispatch({type: 'CHANGE_TODO_STATUS'})
-    const onTitleChange = () => dispatch({type: 'CHANGE_TODO_TITLE', payload: Math.random()})
+    const [arr, setArr] = useState([1, 3, 55, 2342, 999]);
+
+    const totalPrice1 = useMemo(() => {
+        return arr.reduce((acc, el) => acc+=el, 0);
+    }, [arr]);
+
+ //   const fnHandler = useCallback(() => {}, []);
 
     return (
             <div className={App}>
-                <button onClick={onClickHandler}>inc</button>
-                <button onClick={onStatusChange}>change todo status</button>
-                <button onClick={onTitleChange}>change todo title</button>
-                <h1>Counter value: {counter}</h1>
-                {
-                    !!state && (
-                        <>
-                            <h2>{state.id}</h2>
-                            <h2>{state.title}</h2>
-                            <h2>{state.completed.toString()}</h2>
-                        </>
-                    )
-                }
+                <h2>Hello React{totalPrice1}</h2>
+
+                <button onClick={() => setIsVisible(!isVisible)}>toggle</button>
+                <button onClick={() => setArr([...arr, Math.random()])}>
+                    {" "}
+                    add item to arr
+                    {" "}
+                </button>
+                {isVisible && <Test name="test"/>}
             </div>
         );
 }
